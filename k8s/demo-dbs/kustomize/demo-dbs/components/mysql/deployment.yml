@@ -6,7 +6,7 @@
 
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   creationTimestamp: null
   labels:
@@ -17,7 +17,7 @@ spec:
   selector:
     matchLabels:
       app: mysql-demo
-  strategy: {}
+  serviceName: mysql-demo-server
   template:
     metadata:
       creationTimestamp: null
@@ -35,6 +35,8 @@ spec:
         volumeMounts:
           - mountPath: /docker-entrypoint-initdb.d
             name: mysql-configure
+          - mountPath: /var/lib/mysql
+            name: mysql-demo-vol
         ports:
           - name: mysql-port
             protocol: TCP
@@ -45,4 +47,12 @@ spec:
           defaultMode: 420
           name: mysql-configure
         name: mysql-configure
-status: {}
+  volumeClaimTemplates:
+  - metadata:
+      name: mysql-demo-vol
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 4Gi

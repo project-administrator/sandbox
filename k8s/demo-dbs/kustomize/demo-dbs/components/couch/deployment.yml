@@ -6,7 +6,7 @@
 
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   creationTimestamp: null
   labels:
@@ -17,7 +17,7 @@ spec:
   selector:
     matchLabels:
       app: couchdb-demo
-  strategy: {}
+  serviceName: couchdb-demo-server
   template:
     metadata:
       creationTimestamp: null
@@ -50,5 +50,15 @@ spec:
           - name: couchdb-config
             mountPath: /opt/couchdb/etc/local.d/config.ini
             subPath: config.ini
+          - mountPath: /opt/couchdb/data
+            name: couchdb-demo-vol
         resources: {}
-status: {}
+  volumeClaimTemplates:
+  - metadata:
+      name: couchdb-demo-vol
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 4Gi
