@@ -29,6 +29,8 @@ spec:
           configMap:
             name: couchdb-config
       hostname: couchdb-demo
+      securityContext:
+        fsGroup: 5984
       containers:
       - image: couchdb:latest
         ports:
