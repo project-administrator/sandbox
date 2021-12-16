@@ -1,0 +1,41 @@
+name: "test GH boolean skip actions"
+
+env:
+  GO_VERSION: 1.16
+  MINIKUBE_VERSION: v1.24.0
+  KUBERNETES_VERSION: v1.21.2
+
+on:
+  workflow_dispatch:
+    inputs:
+      skip_step_1:
+        description: 'Skip step 1'
+        type: boolean
+      skip_step_2:
+        description: 'Skip step 2'
+        type: boolean
+
+jobs:
+  PreStep:
+    runs-on: ubuntu-20.04
+    steps:
+      -name: status
+       run: echo this is pre-step
+    
+  Step1:
+    if: {{ github.event.inputs.skip_step_1 == false }}
+    runs-on: ubuntu-20.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v2
+
+  Step2:
+    if: {{ github.event.inputs.skip_step_1 == false }}
+    runs-on: ubuntu-20.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ env.GO_VERSION }}
