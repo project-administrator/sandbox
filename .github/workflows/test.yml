@@ -19,12 +19,12 @@ jobs:
   PreStep:
     runs-on: ubuntu-20.04
     steps:
-#    - name: Deploy all
-#      run: |
-#        echo "Deploy all to ${{ github.event.inputs.target_env }}"
-    - name: status
-      run: |
-        echo this is pre-step
+   - name: Deploy all
+     run: |
+       echo "Deploy all to ${{ github.event.inputs.target_env }}"
+    # - name: status
+    #   run: |
+    #     echo this is pre-step
     
   Step1:
     if: ${{ github.event.inputs.skip_step_1 == "false" }}
