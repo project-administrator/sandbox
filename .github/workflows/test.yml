@@ -20,7 +20,8 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       -name: status
-       run: echo this is pre-step
+       run: |
+         echo this is pre-step
     
   Step1:
     if: {{ github.event.inputs.skip_step_1 == false }}
